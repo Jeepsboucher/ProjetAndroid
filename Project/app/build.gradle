@@ -16,6 +16,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/main/java/helpers', 'src/main/java/com.jpetalice.cba533.projetandroid/helpers', 'src/main/java/com/jpetalice/cba533/projetandroid/helpers', 'src/main/java/com/jpetalice/cba533/projetandroid/class']
+        }
+    }
 }
 
 dependencies {
