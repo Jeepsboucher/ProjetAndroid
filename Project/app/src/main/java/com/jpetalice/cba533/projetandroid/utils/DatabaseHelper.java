@@ -47,6 +47,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void deleteFromDatabase(){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(" DROP TABLE IF EXISTS " + RECIPE);
+        db.execSQL(" DROP TABLE IF EXISTS " + PASSWORD);
+        onCreate(db);
+    }
+
     public void addRecipe(Recipe recipe){
         SQLiteDatabase db = getWritableDatabase();
 
