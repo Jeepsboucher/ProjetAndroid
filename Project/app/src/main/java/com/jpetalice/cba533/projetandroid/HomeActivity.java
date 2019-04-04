@@ -10,7 +10,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Database database = new Database(this);
+        DatabaseHelper database = new DatabaseHelper(this);
 
         Recipe recipeAlice = new Recipe("Recette alice", "bonne poutine grasse");
         database.addRecipe(recipeAlice);
