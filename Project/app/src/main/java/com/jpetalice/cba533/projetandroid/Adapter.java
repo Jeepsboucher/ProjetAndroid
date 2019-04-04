@@ -6,6 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+    private Recipe[] dataSet;
+
+    public Adapter(Recipe[] dataSet) {
+        this.dataSet = dataSet;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -19,6 +24,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
+
         return 0;
     }
 
