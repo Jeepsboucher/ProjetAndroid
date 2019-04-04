@@ -1,4 +1,4 @@
-package com.jpetalice.cba533.projetandroid;
+package com.jpetalice.cba533.projetandroid.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +7,10 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.jpetalice.cba533.projetandroid.R;
+import com.jpetalice.cba533.projetandroid.data.Recipe;
+import com.jpetalice.cba533.projetandroid.utils.DatabaseHelper;
 
 public class HomeActivity extends AppCompatActivity {
     private RecyclerView recyclerView;

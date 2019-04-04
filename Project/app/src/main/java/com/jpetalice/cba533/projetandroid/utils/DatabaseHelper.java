@@ -1,4 +1,4 @@
-package com.jpetalice.cba533.projetandroid;
+package com.jpetalice.cba533.projetandroid.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.jpetalice.cba533.projetandroid.data.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +22,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "EasyRecipe";
 
     // Tables
-    private static final String RECIPE = "recipe";
-    private static final String PASSWORD = "password";
+    private static final String RECIPE = "tbl_recipe";
+    private static final String PASSWORD = "tbl_password";
 
     // Tables Create Statements
     private static final String CREATE_TBL_RECIPE = "CREATE TABLE tbl_recipe( Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Name TEXT, Descr TEXT, Photo BLOB );";
@@ -68,18 +70,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (c.moveToFirst()){
             do {
                 Recipe currentRecipe = new Recipe();
-                currentRecipe.setName(c.getString(0));
-                currentRecipe.setDescr(c.getString(1));
+                currentRecipe.setName(c.getString(c.getColumnIndex("Name")));
+                currentRecipe.setDescr(c.getString(c.getColumnIndex("Descr")));
                 recipes.add(currentRecipe);
             } while (c.moveToNext());
         }
         c.close();
         return recipes;
-
     }
 
     public void deleteRecipe(String recipeId){
-        //SQLiteDatabase db = getWritableDatabase();
-        //db.execSQL("DELETE FROM tbl_recipe WHERE Id = " + recipeId + ";");
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(RECIPE, "Id=" + recipeId, null);
     }
 }

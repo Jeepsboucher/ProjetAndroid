@@ -1,4 +1,4 @@
-package com.jpetalice.cba533.projetandroid;
+package com.jpetalice.cba533.projetandroid.data;
 
 import java.sql.Blob;
 
