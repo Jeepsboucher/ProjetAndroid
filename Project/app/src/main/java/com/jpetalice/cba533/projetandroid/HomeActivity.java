@@ -21,6 +21,10 @@ public class HomeActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        DatabaseHelper database = new DatabaseHelper(this);
+
+        Recipe recipeAlice = new Recipe("Recette alice", "bonne poutine grasse");
+        database.addRecipe(recipeAlice);
         adapter = new Adapter(dataSet);
         recyclerView.setAdapter(adapter);
     }
