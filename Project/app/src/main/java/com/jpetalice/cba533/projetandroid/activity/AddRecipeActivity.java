@@ -1,5 +1,6 @@
 package com.jpetalice.cba533.projetandroid.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,5 +37,12 @@ public class AddRecipeActivity extends AppCompatActivity {
     private void AddRecipe(String name, String descr){
         Recipe newRecipe = new Recipe(name, descr);
         database.addRecipe(newRecipe);
+
+        GoToMainPage();
+    }
+
+    private void GoToMainPage(){
+        Intent main = new Intent(this, HomeActivity.class);
+        startActivity(main);
     }
 }
