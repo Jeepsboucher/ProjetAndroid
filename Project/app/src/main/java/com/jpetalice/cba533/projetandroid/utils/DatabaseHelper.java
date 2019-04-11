@@ -90,4 +90,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(RECIPE, "Id=" + recipeId, null);
     }
+
+    public void addPassword(Integer password){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("Descr", "password");
+        values.put("Value", password);
+        db.insert(PASSWORD, null, values);
+        db.close();
+    }
+
+    public void deletePassword() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(PASSWORD, "Descr=password", null);
+        db.close();
+    }
 }
