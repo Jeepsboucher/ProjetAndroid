@@ -1,6 +1,7 @@
 package com.jpetalice.cba533.projetandroid.activity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,14 +13,16 @@ import com.jpetalice.cba533.projetandroid.data.Recipe;
 import com.jpetalice.cba533.projetandroid.utils.DatabaseHelper;
 
 public class AddRecipeActivity extends AppCompatActivity {
-
     DatabaseHelper database = new DatabaseHelper(this);
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_recipe);
         SetListeners();
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.notif);
     }
 
     private void SetListeners(){
@@ -35,9 +38,9 @@ public class AddRecipeActivity extends AppCompatActivity {
     }
 
     private void AddRecipe(String name, String descr){
+        mediaPlayer.start();
         Recipe newRecipe = new Recipe(name, descr);
         database.addRecipe(newRecipe);
-
         GoToMainPage();
     }
 
