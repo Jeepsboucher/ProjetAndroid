@@ -10,30 +10,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-
-import java.util.ArrayList;
 import java.util.List;
-
 import com.jpetalice.cba533.projetandroid.Adapter;
 import com.jpetalice.cba533.projetandroid.R;
 import com.jpetalice.cba533.projetandroid.data.Recipe;
 import com.jpetalice.cba533.projetandroid.utils.DatabaseHelper;
 
-import java.util.List;
-
 public class HomeActivity extends AppCompatActivity {
 
     DatabaseHelper database = new DatabaseHelper(this);
-
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private List<Recipe> dataSet;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -65,7 +50,6 @@ public class HomeActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         SetListeners();
     }
 
@@ -82,7 +66,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 GotToAddNewRecipe();
-
             }
         });
     }
@@ -93,14 +76,14 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void LoadData(){
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_recipe);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView_recipe);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        dataSet = new ArrayList<>();
+        List<Recipe> dataSet;
         dataSet = database.getRecipes();
-        adapter = new Adapter(dataSet);
+        RecyclerView.Adapter adapter = new Adapter(dataSet);
         recyclerView.setAdapter(adapter);
     }
 }

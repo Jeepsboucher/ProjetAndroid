@@ -1,12 +1,14 @@
 package com.jpetalice.cba533.projetandroid.data;
 
+import android.graphics.Bitmap;
+
 import java.sql.Blob;
 
 public class Recipe {
 
     private String Name;
     private String Descr;
-    private Blob Photo;
+    private Bitmap Photo;
 
     public Recipe() {
         Name = "";
@@ -14,10 +16,10 @@ public class Recipe {
         Photo = null;
     }
 
-    public Recipe(String name, String descr) {
+    public Recipe(String name, String descr, Bitmap photo) {
         Name = name;
         Descr = descr;
-        Photo = null;
+        Photo = photo;
     }
 
     public String getDescr() {
@@ -28,11 +30,11 @@ public class Recipe {
         Descr = descr;
     }
 
-    public Blob getPhoto() {
+    public Bitmap getPhoto() {
         return Photo;
     }
 
-    public void setPhoto(Blob photo) {
+    public void setPhoto(Bitmap photo) {
         Photo = photo;
     }
 

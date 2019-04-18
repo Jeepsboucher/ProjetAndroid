@@ -5,10 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.jpetalice.cba533.projetandroid.R;
 import com.jpetalice.cba533.projetandroid.data.Recipe;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +65,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("Name", recipe.getName());
         values.put("Descr", recipe.getDescr());
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        recipe.getPhoto().compress(Bitmap.CompressFormat.JPEG, 100, bos);
+        byte[] img = bos.toByteArray();
+        values.put("Photo", img);
+
         db.insert("tbl_recipe", null, values);
         db.close();
     }
@@ -77,6 +88,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (c.moveToFirst()){
             do {
                 Recipe currentRecipe = new Recipe();
+
+                byte[] data = c.getBlob(c.getColumnIndex("Photo"));
+                if (data != null || data.length != 0) {
+                    ByteArrayInputStream imageStream = new ByteArrayInputStream(data);
+                    Bitmap img = BitmapFactory.decodeStream(imageStream);
+                    currentRecipe.setPhoto(img);
+                }
+
                 currentRecipe.setName(c.getString(c.getColumnIndex("Name")));
                 currentRecipe.setDescr(c.getString(c.getColumnIndex("Descr")));
                 recipes.add(currentRecipe);
