@@ -31,10 +31,27 @@ public class Test extends View {
         myPaint.setColor(getResources().getColor(R.color.colorPrimary));
         myPaint.setStyle(Paint.Style.STROKE);
         myPaint.setStrokeWidth(3);
+        Paint circlePaint = new Paint();
+        circlePaint.setColor(getResources().getColor(R.color.black));
         int width = canvas.getWidth();
+
+        Integer circle1X = ((int)(width*.05) + (int)(width*.20)) /2;
+        Integer circle2X = ((int)(width*.30) + (int)(width*.45)) /2;
+        Integer circle3X = ((int)(width*.55) + (int)(width*.70)) /2;
+        Integer circle4X = ((int)(width*.80) + (int)(width*.95)) /2;
+
         canvas.drawRect((int)(width * .05),100,(int)(width * .20),250, myPaint);
+        canvas.drawCircle(circle1X, 175, 20, circlePaint);
+
         canvas.drawRect((int)(width*.30),100,(int)(width*.45),250, myPaint);
+        canvas.drawCircle(circle2X, 175, 20, circlePaint);
+
         canvas.drawRect((int)(width*.55),100,(int)(width*.70),250, myPaint);
+        canvas.drawCircle(circle3X, 175, 20, circlePaint);
+
         canvas.drawRect((int)(width*.80),100,(int)(width * .95),250, myPaint);
+        canvas.drawCircle(circle4X, 175, 20, circlePaint);
     }
+
+
 }
