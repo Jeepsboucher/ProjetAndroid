@@ -1,6 +1,7 @@
 package com.jpetalice.cba533.projetandroid.activity;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
 import java.util.List;
 import com.jpetalice.cba533.projetandroid.Adapter;
 import com.jpetalice.cba533.projetandroid.R;
@@ -81,9 +84,24 @@ public class HomeActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        List<Recipe> dataSet;
-        dataSet = database.getRecipes();
-        RecyclerView.Adapter adapter = new Adapter(dataSet);
-        recyclerView.setAdapter(adapter);
+        List<Recipe> listRecipes;
+        listRecipes = database.getRecipes();
+
+        recyclerView.setAdapter(new Adapter(listRecipes, new Adapter.OnItemClickListener() {
+            @Override public void onItemClick(Recipe recipe) {
+                makeToast();
+                OpenRecipe(recipe);
+            }
+        }));
+    }
+
+    private void makeToast(){
+        Toast.makeText(this, "Item Clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    private void OpenRecipe(Recipe recipe){
+        Intent viewRecipe = new Intent(this, ViewRecipeActivity.class);
+        //viewRecipe.putExtra("recipe", recipe.id);
+        startActivity(viewRecipe);
     }
 }

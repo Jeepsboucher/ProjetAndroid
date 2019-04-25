@@ -15,10 +15,17 @@ import com.jpetalice.cba533.projetandroid.data.Recipe;
 import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-    private List<Recipe> dataSet;
 
-    public Adapter(List<Recipe> dataSet) {
-        this.dataSet = dataSet;
+    public interface OnItemClickListener {
+        void onItemClick(Recipe recipe);
+    }
+
+    private List<Recipe> listRecipes;
+    private final OnItemClickListener listener;
+
+    public Adapter(List<Recipe> listRecipes, OnItemClickListener listener) {
+        this.listRecipes = listRecipes;
+        this.listener = listener;
     }
 
     @NonNull
@@ -34,7 +41,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Recipe recipe = dataSet.get(position);
+        holder.bind(listRecipes.get(position), listener);
+
+        Recipe recipe = listRecipes.get(position);
 
         ImageView imageView = holder.image_photo;
         imageView.setImageBitmap(recipe.getPhoto());
@@ -45,7 +54,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @Override
     public int getItemCount() {
 
-        return dataSet.size();
+        return listRecipes.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -60,6 +69,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
             image_photo = itemView.findViewById(R.id.image_photo);
             textView_Name = itemView.findViewById(R.id.textView_name);
+        }
+
+        public void bind(final Recipe recipe, final OnItemClickListener listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(recipe);
+                }
+            });
         }
     }
 }
