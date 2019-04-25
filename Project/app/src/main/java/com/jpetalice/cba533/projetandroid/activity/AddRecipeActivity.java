@@ -101,6 +101,7 @@ public class AddRecipeActivity extends AppCompatActivity {
             case 0:
                 if(resultCode == RESULT_OK){
                     Bundle extras = imageReturnedIntent.getExtras();
+                    assert extras != null;
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
                     imageview.setImageBitmap(imageBitmap);
 
