@@ -91,19 +91,59 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(RECIPE, "Id=" + recipeId, null);
     }
 
-    public void addPassword(Integer password){
-        SQLiteDatabase db = getWritableDatabase();
+    public void addOrUpdatePassword(Integer password){
+        SQLiteDatabase dbReadable = getReadableDatabase();
+        SQLiteDatabase dbWritable = getWritableDatabase();
+        String selectQuery = "SELECT * FROM tbl_password";
 
-        ContentValues values = new ContentValues();
-        values.put("Descr", "password");
-        values.put("Value", password);
-        db.insert(PASSWORD, null, values);
-        db.close();
+        Cursor c = dbReadable.rawQuery(selectQuery, null);
+        if(c.moveToFirst()) {
+            ContentValues values = new ContentValues();
+            values.put("Value", password);
+            dbWritable.update(PASSWORD, values, "Descr='password'", null);
+        } else {
+
+            ContentValues values = new ContentValues();
+            values.put("Descr", "password");
+            values.put("Value", password);
+            dbWritable.insert(PASSWORD, null, values);
+        }
+        dbWritable.close();
     }
 
     public void deletePassword() {
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(PASSWORD, "Descr=password", null);
+        db.delete(PASSWORD, "Descr='password'", null);
         db.close();
+    }
+
+    public boolean checkPassword(int password) {
+        SQLiteDatabase db = getReadableDatabase();
+        String selectQuery = "SELECT * FROM tbl_password";
+
+        Cursor c = db.rawQuery(selectQuery, null);
+        boolean toReturn = false;
+        if(c.moveToFirst()) {
+            int dbPassword = c.getInt(c.getColumnIndex("Value"));
+            if(password == dbPassword) {
+                db.close();
+                toReturn = true;
+            }
+        }
+        db.close();
+        return toReturn;
+    }
+
+    public boolean havePassword() {
+        SQLiteDatabase db = getReadableDatabase();
+        String selectQuery = "SELECT * FROM tbl_password";
+
+        Cursor c = db.rawQuery(selectQuery, null);
+        boolean toReturn = false;
+        if(c.moveToFirst()) {
+                toReturn = true;
+        }
+        db.close();
+        return toReturn;
     }
 }

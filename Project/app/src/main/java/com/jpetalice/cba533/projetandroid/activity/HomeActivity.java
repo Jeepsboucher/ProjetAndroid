@@ -56,11 +56,13 @@ public class HomeActivity extends AppCompatActivity {
 
     private void goToPassword() {
         Intent password = new Intent(this, PasswordActivity.class);
+        password.putExtra("pageType", "AddOrUpdatePassword");
         startActivity(password);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
