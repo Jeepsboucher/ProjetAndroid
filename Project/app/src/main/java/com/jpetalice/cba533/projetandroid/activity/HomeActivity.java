@@ -1,6 +1,7 @@
 package com.jpetalice.cba533.projetandroid.activity;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,30 +11,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import com.jpetalice.cba533.projetandroid.Adapter;
 import com.jpetalice.cba533.projetandroid.R;
 import com.jpetalice.cba533.projetandroid.data.Recipe;
 import com.jpetalice.cba533.projetandroid.utils.DatabaseHelper;
 
-import java.util.List;
-
 public class HomeActivity extends AppCompatActivity {
 
     DatabaseHelper database = new DatabaseHelper(this);
-
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private List<Recipe> dataSet;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -65,7 +54,6 @@ public class HomeActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         SetListeners();
     }
 
@@ -76,15 +64,28 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void SetListeners(){
+
         FloatingActionButton btnAdd = findViewById(R.id.button_add_recipe);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GotToAddNewRecipe();
+                Shake(v);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        GotToAddNewRecipe();
+                    }
+                }, 500);
 
             }
         });
+    }
+
+    void Shake(View v){
+        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        v.startAnimation(shake);
     }
 
     private void GotToAddNewRecipe(){
@@ -93,14 +94,24 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void LoadData(){
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView_recipe);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView_recipe);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        dataSet = new ArrayList<>();
-        dataSet = database.getRecipes();
-        adapter = new Adapter(dataSet);
-        recyclerView.setAdapter(adapter);
+        List<Recipe> listRecipes;
+        listRecipes = database.getRecipes();
+
+        recyclerView.setAdapter(new Adapter(listRecipes, new Adapter.OnItemClickListener() {
+            @Override public void onItemClick(Recipe recipe) {
+                OpenRecipe(recipe);
+            }
+        }));
+    }
+
+    private void OpenRecipe(Recipe recipe){
+        Intent viewRecipe = new Intent(this, ViewRecipeActivity.class);
+        viewRecipe.putExtra("RecipeId", recipe.getId());
+        startActivity(viewRecipe);
     }
 }
