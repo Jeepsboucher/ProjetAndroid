@@ -26,7 +26,7 @@ public class AddRecipeActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
 
     Recipe recipe;
-    Boolean isUpdating;
+    Boolean isUpdating = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,6 @@ public class AddRecipeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (isUpdating)
                     OpenRecipe(recipe);
-
                 else
                     GoToMainPage();
             }

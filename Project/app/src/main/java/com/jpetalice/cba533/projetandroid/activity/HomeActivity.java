@@ -1,6 +1,7 @@
 package com.jpetalice.cba533.projetandroid.activity;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
 import java.util.List;
 import com.jpetalice.cba533.projetandroid.Adapter;
 import com.jpetalice.cba533.projetandroid.R;
@@ -60,14 +64,28 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void SetListeners(){
+
         FloatingActionButton btnAdd = findViewById(R.id.button_add_recipe);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GotToAddNewRecipe();
+                Shake(v);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        GotToAddNewRecipe();
+                    }
+                }, 500);
+
             }
         });
+    }
+
+    void Shake(View v){
+        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        v.startAnimation(shake);
     }
 
     private void GotToAddNewRecipe(){
