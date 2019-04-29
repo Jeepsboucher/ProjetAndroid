@@ -33,10 +33,6 @@ public class PasswordActivity extends AppCompatActivity {
 
     private void setListener() {
         Button button = findViewById(R.id.button_deletePassword);
-        passwordDisplay = findViewById(R.id.test);
-        if(pageType == "Password") {
-            button.setVisibility(View.GONE);
-        }
         findViewById(R.id.button_deletePassword).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,6 +41,24 @@ public class PasswordActivity extends AppCompatActivity {
                 GoToHomeActivity();
             }
         });
+
+        findViewById(R.id.button_keyboard).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OpenKeyboard();
+
+            }
+        });
+        passwordDisplay = findViewById(R.id.test);
+        if(pageType == "Password") {
+            button.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void OpenKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     @Override
@@ -80,7 +94,6 @@ public class PasswordActivity extends AppCompatActivity {
                 password = password.substring(0, length - 1);
             }
         } else if (tryParseInt(keyPressed)) {
-            Toast.makeText(getApplicationContext(),String.valueOf(keyPressed), Toast.LENGTH_SHORT).show();
 
             if(password.length() < 4) {
                 password += keyPressed;
