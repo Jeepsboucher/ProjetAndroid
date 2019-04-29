@@ -8,10 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-
-import com.jpetalice.cba533.projetandroid.R;
 import com.jpetalice.cba533.projetandroid.data.Recipe;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -75,6 +72,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updateRecipe(Recipe recipe){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("Name", recipe.getName());
+        values.put("Descr", recipe.getDescr());
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        recipe.getPhoto().compress(Bitmap.CompressFormat.JPEG, 100, bos);
+        byte[] img = bos.toByteArray();
+        values.put("Photo", img);
+
+        db.update("tbl_recipe", values, "Id = " + recipe.getId(), null);
+        db.close();
+    }
+
     public List<Recipe> getRecipes() {
         List<Recipe> recipes = new ArrayList<>();
 
@@ -88,14 +101,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (c.moveToFirst()){
             do {
                 Recipe currentRecipe = new Recipe();
+                currentRecipe.setId(c.getInt(c.getColumnIndex("Id")));
 
                 byte[] data = c.getBlob(c.getColumnIndex("Photo"));
-                if (data != null || data.length != 0) {
-                    ByteArrayInputStream imageStream = new ByteArrayInputStream(data);
-                    Bitmap img = BitmapFactory.decodeStream(imageStream);
-                    currentRecipe.setPhoto(img);
+                if (data != null) {
+                    if (data.length != 0){
+                        ByteArrayInputStream imageStream = new ByteArrayInputStream(data);
+                        Bitmap img = BitmapFactory.decodeStream(imageStream);
+                        currentRecipe.setPhoto(img);
+                    }
                 }
-
                 currentRecipe.setName(c.getString(c.getColumnIndex("Name")));
                 currentRecipe.setDescr(c.getString(c.getColumnIndex("Descr")));
                 recipes.add(currentRecipe);
@@ -105,9 +120,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return recipes;
     }
 
-    public void deleteRecipe(String recipeId){
+    public Recipe getRecipe(int recipeId) {
+        Recipe recipe = new Recipe();
+
+        SQLiteDatabase db = getReadableDatabase();
+        String selectQuery = "SELECT * FROM tbl_recipe WHERE tbl_recipe.Id = " + recipeId;
+
+        Log.e(LOG, selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()){
+            recipe.setId(c.getInt(c.getColumnIndex("Id")));
+
+            byte[] data = c.getBlob(c.getColumnIndex("Photo"));
+            if (data != null) {
+                if (data.length != 0){
+                    ByteArrayInputStream imageStream = new ByteArrayInputStream(data);
+                    Bitmap img = BitmapFactory.decodeStream(imageStream);
+                    recipe.setPhoto(img);
+                }
+            }
+
+            recipe.setName(c.getString(c.getColumnIndex("Name")));
+            recipe.setDescr(c.getString(c.getColumnIndex("Descr")));
+        }
+        c.close();
+        return recipe;
+    }
+
+    public void deleteRecipe(int RecipeId){
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(RECIPE, "Id=" + recipeId, null);
+        db.delete(RECIPE, "Id = " + RecipeId, null);
     }
 
     public void addOrUpdatePassword(Integer password){

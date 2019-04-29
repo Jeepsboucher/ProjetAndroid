@@ -2,10 +2,9 @@ package com.jpetalice.cba533.projetandroid.data;
 
 import android.graphics.Bitmap;
 
-import java.sql.Blob;
-
 public class Recipe {
 
+    private int Id;
     private String Name;
     private String Descr;
     private Bitmap Photo;
@@ -20,6 +19,14 @@ public class Recipe {
         Name = name;
         Descr = descr;
         Photo = photo;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
     }
 
     public String getDescr() {
@@ -45,4 +52,5 @@ public class Recipe {
     public void setName(String name) {
         Name = name;
     }
+
 }

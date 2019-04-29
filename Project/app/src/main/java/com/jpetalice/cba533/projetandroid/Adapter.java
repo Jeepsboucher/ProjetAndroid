@@ -71,7 +71,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             textView_Name = itemView.findViewById(R.id.textView_name);
         }
 
-        public void bind(final Recipe recipe, final OnItemClickListener listener) {
+        void bind(final Recipe recipe, final OnItemClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     listener.onItemClick(recipe);

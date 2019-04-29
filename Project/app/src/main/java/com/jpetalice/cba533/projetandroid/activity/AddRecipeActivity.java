@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jpetalice.cba533.projetandroid.R;
@@ -23,6 +24,9 @@ import com.jpetalice.cba533.projetandroid.utils.DatabaseHelper;
 public class AddRecipeActivity extends AppCompatActivity {
     DatabaseHelper database = new DatabaseHelper(this);
     private MediaPlayer mediaPlayer;
+
+    Recipe recipe;
+    Boolean isUpdating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,18 @@ public class AddRecipeActivity extends AppCompatActivity {
         imageview.setImageResource(R.drawable.plate);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            recipe = database.getRecipe(getIntent().getIntExtra("RecipeId", 0));
+            isUpdating = true;
+            SetData();
+        }
+    }
+
     private void SetListeners(){
         Button btnAddPhoto = findViewById(R.id.btnAddPhoto);
         btnAddPhoto.setOnClickListener(new View.OnClickListener() {
@@ -47,25 +63,28 @@ public class AddRecipeActivity extends AppCompatActivity {
         Button btnCancel = findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                GoToMainPage();
+                if (isUpdating)
+                    OpenRecipe(recipe);
+
+                else
+                    GoToMainPage();
             }
         });
 
         Button btnSave = findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 String txtName = ((EditText) findViewById(R.id.txtName)).getText().toString();
                 String txtDescr = ((EditText) findViewById(R.id.txtDescr)).getText().toString();
+                ImageView imageView = findViewById(R.id.imgRecipe);
+                Bitmap photo = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 
                 if (!txtName.equals("") && !txtDescr.equals("")) {
-
-                    ImageView imageView = findViewById(R.id.imgRecipe);
-                    Bitmap photo = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-
-                    AddRecipe(txtName, txtDescr, photo);
+                    AddOrUpdateRecipe(txtName, txtDescr, photo);
                 }
                 else
-                    MakeToast("Vous devez ajouter un nom et une description");
+                    MakeAlertToast();
             }
         });
     }
@@ -117,11 +136,39 @@ public class AddRecipeActivity extends AppCompatActivity {
         }
     }
 
-    private void AddRecipe(String name, String descr, Bitmap photo){
+    private void SetData(){
+        ImageView image = findViewById(R.id.imgRecipe);
+        TextView name = findViewById(R.id.txtName);
+        TextView descr = findViewById(R.id.txtDescr);
+
+        if (recipe != null){
+            image.setImageBitmap(recipe.getPhoto());
+            name.setText(recipe.getName());
+            descr.setText(recipe.getDescr());
+        }
+    }
+
+    private void AddOrUpdateRecipe(String name, String descr, Bitmap photo){
         mediaPlayer.start();
-        Recipe newRecipe = new Recipe(name, descr, photo);
-        database.addRecipe(newRecipe);
-        GoToMainPage();
+
+        if (isUpdating) {
+            recipe.setName(name);
+            recipe.setDescr(descr);
+            recipe.setPhoto(photo);
+            database.updateRecipe(recipe);
+            OpenRecipe(recipe);
+        }
+        else {
+            Recipe newRecipe = new Recipe(name, descr, photo);
+            database.addRecipe(newRecipe);
+            GoToMainPage();
+        }
+    }
+
+    private void OpenRecipe(Recipe recipe){
+        Intent viewRecipe = new Intent(this, ViewRecipeActivity.class);
+        viewRecipe.putExtra("RecipeId", recipe.getId());
+        startActivity(viewRecipe);
     }
 
     private void GoToMainPage(){
@@ -129,7 +176,7 @@ public class AddRecipeActivity extends AppCompatActivity {
         startActivity(main);
     }
 
-    private void MakeToast(String message){
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    private void MakeAlertToast(){
+        Toast.makeText(this, "Vous devez ajouter un nom et une description", Toast.LENGTH_LONG).show();
     }
 }
