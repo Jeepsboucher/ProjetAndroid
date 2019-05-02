@@ -1,4 +1,4 @@
-package com.jpetalice.cba533.projetandroid.activity;
+package com.jpetalice.cba533.projetandroid.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -10,18 +10,18 @@ import com.jpetalice.cba533.projetandroid.R;
 
 import java.util.List;
 
-public class Test extends View {
+public class PasswordView extends View {
     private int numberOfInput=0;
 
-    public Test(Context context) {
+    public PasswordView(Context context) {
         super(context);
     }
 
-    public Test(Context context, @Nullable AttributeSet attrs) {
+    public PasswordView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public Test(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public PasswordView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

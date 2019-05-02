@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -13,9 +12,7 @@ import android.widget.Toast;
 
 import com.jpetalice.cba533.projetandroid.R;
 import com.jpetalice.cba533.projetandroid.utils.DatabaseHelper;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.jpetalice.cba533.projetandroid.view.PasswordView;
 
 public class PasswordActivity extends AppCompatActivity {
 
@@ -23,7 +20,7 @@ public class PasswordActivity extends AppCompatActivity {
 
     String pageType;
     String password;
-    Test passwordDisplay;
+    PasswordView passwordDisplay;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

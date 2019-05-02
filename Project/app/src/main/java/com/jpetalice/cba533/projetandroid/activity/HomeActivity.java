@@ -15,7 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import java.util.List;
-import com.jpetalice.cba533.projetandroid.Adapter;
+import com.jpetalice.cba533.projetandroid.utils.Adapter;
 import com.jpetalice.cba533.projetandroid.R;
 import com.jpetalice.cba533.projetandroid.data.Recipe;
 import com.jpetalice.cba533.projetandroid.utils.DatabaseHelper;

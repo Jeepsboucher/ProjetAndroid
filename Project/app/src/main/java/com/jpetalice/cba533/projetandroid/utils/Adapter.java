@@ -1,7 +1,6 @@
-package com.jpetalice.cba533.projetandroid;
+package com.jpetalice.cba533.projetandroid.utils;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jpetalice.cba533.projetandroid.R;
 import com.jpetalice.cba533.projetandroid.data.Recipe;
 
 import java.util.List;
